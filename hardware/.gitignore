@@ -1,0 +1,9 @@
+*
+!.gitignore
+!*.kicad_prl
+!*.kicad_sch
+!*.kicad_pcb
+!*.kicad_pro
+!*.pretty
+!*.pretty/*
+!*.kicad_sym
