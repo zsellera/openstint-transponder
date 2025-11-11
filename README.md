@@ -2,6 +2,9 @@
 
 JLCPCB manifactures and assembles 5 panels of 2x4s, grand total of 40 pcs, for $130, including taxes and shipping.
 
+<img width="800" alt="openstint transponder v1 reference design" src="https://github.com/user-attachments/assets/bd993deb-2687-4035-adfb-4d545f512d77" />
+
+
 ## Manufacting
 
 ```
