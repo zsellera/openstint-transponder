@@ -15,6 +15,19 @@ JLCPCB manifactures and assembles 5 panels of 2x4s, grand total of 40 pcs, for $
 
 <img width="800" alt="openstint transponder v1 reference design" src="https://github.com/user-attachments/assets/bd993deb-2687-4035-adfb-4d545f512d77" />
 
+## Compile & flash
+
+The firmware compiles with cmake (and downloads the necessary STM32 libraries meanwhile). Make sure to use `Release` build: creating the BPSK signal with the right timing is critical, and `-O0` optimalization level does not guarantee that. If you see signal coming out from the transponder, but it can not be decoded, this should be the first thing to check.
+
+```shell
+cmake -DCMAKE_BUILD_TYPE=Release .
+make
+
+st-flash --connect-under-reset --format ihex write transponder.hex
+```
+
+The programming points are separated by 2 mm. I use a pinheader of the same pitch with pogo pins attached to them as a makeshift programming adapter.
+
 ## Personal note (2025-12-10)
 
 This project use a FET driver from TI to produce the necessary antenna current. This IC needs 4.5 V minimum to operate, meaning we can not use this transponder with 1s batteries (1/12 pancars). I could not find any push-pull driver which can operate at 3.3 V and 5+ MHz. Some MCUs exists which can source/sink 50 mA directly from GPIO, but as of now, I don't know how to make this transponder work with such a low current. This design requires ±170 mA, and still produces only 1/2 of the signal level as an RC4 hybrid.
@@ -35,7 +48,9 @@ Unfortunately, I do not have the required analog brain to figure this out. I fee
 
 ## Manufacting
 
-See [relases](https://github.com/zsellera/openstint-transponder/releases/) for gerber, pos and BOM files. These are directly uploadable to (JLCPCB)[https://jlcpcb.com/]. As of now (2025-12-10), manufacturing 5 panels (40 transponders) with assembly costs $160, while 20 panels (160 pcs of transponders) cost $300 (prices with shipping and taxes to EU).
+See [relases](https://github.com/zsellera/openstint-transponder/releases/) for gerber, pos and BOM files. These are directly uploadable to [JLCPCB](https://jlcpcb.com/). As of now (2025-12-10), manufacturing 5 panels (40 transponders) with assembly costs $160, while 20 panels (160 pcs of transponders) cost $300 (prices with shipping and taxes to EU).
+
+Manufacture with 1 mm PCB width (so coil tuning matches mine).
 
 ```
 kikit panelize \
