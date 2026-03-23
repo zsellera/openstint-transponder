@@ -1,0 +1,55 @@
+name: Nightly PCB Panel
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  panelize:
+    runs-on: ubuntu-latest
+    container:
+      image: yaqwsx/kikit:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Panelize PCB
+        run: |
+          mkdir -p panel
+          kikit panelize -p kikit-panel-config.json \
+            hardware/openstint-transponder.kicad_pcb \
+            panel/panel-8.kicad_pcb
+
+      - name: Generate JLCPCB fab files
+        working-directory: hardware
+        run: |
+          kikit fab jlcpcb --no-drc --assembly \
+            --schematic openstint-transponder.kicad_sch \
+            ../panel/panel-8.kicad_pcb \
+            ../panel/
+
+      - name: Export schematic to PNG
+        run: |
+          apt-get install -y librsvg2-bin
+          kicad-cli sch export svg \
+            --output schematic.svg \
+            hardware/openstint-transponder.kicad_sch
+          rsvg-convert -w 2000 schematic.svg -o schematic.png
+
+      - name: Package release files
+        run: zip -r panel-release.zip panel/
+
+      - name: Publish nightly release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: nightly-${{ github.ref_name }}
+          name: Nightly ${{ github.ref_name }}
+          prerelease: true
+          draft: false
+          body: |
+            ![Schematic](https://github.com/${{ github.repository }}/releases/download/nightly-${{ github.ref_name }}/schematic.png)
+          files: |
+            panel-release.zip
+            schematic.png
