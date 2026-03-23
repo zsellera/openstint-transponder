@@ -5298,6 +5298,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB_CORRECTION" "0; 0; 180"
+			(at 245.11 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "bb94cbd7-34bc-4f24-a952-43487f1d95b2")
 		)
@@ -5447,6 +5456,15 @@
 			)
 		)
 		(property "LCSC" "C507118"
+			(at 92.71 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB_CORRECTION" "0; 0; 270"
 			(at 92.71 58.42 0)
 			(effects
 				(font
@@ -7000,6 +7018,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB_CORRECTION" "0; 0; 270"
+			(at 250.19 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "37c032ca-3792-4597-ac35-f2de52396176")
 		)
@@ -7087,6 +7114,15 @@
 			)
 		)
 		(property "LCSC" "C2286"
+			(at 45.72 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB_CORRECTION" "0; 0; 180"
 			(at 45.72 50.8 0)
 			(effects
 				(font
@@ -8172,7 +8208,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://jlcpcb.com/api/file/downloadByFileSystemAccessId/8590197686655098880"
+		(property "Datasheet" "https://jlcpcb.com/api/file/downloadByFileSystemAccessId/8613786702142062592"
 			(at 142.24 48.26 0)
 			(effects
 				(font
@@ -8190,7 +8226,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C2901558"
+		(property "LCSC" "C2831380"
 			(at 142.24 48.26 0)
 			(effects
 				(font
@@ -8277,6 +8313,15 @@
 			)
 		)
 		(property "LCSC" "C135817"
+			(at 219.71 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB_CORRECTION" "0; 0; 180"
 			(at 219.71 139.7 0)
 			(effects
 				(font

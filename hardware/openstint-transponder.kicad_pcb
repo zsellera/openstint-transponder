@@ -379,6 +379,19 @@
 				)
 			)
 		)
+		(property "JLCPCB_CORRECTION" "0; 0; 180"
+			(at 0 0 180)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "dbe0190d-b79d-44bb-82fa-80b6d0c4f5fa")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/bb2a365c-7bcb-409e-a80a-01551880f6b0")
 		(sheetname "/")
 		(sheetfile "openstint-transponder.kicad_sch")
@@ -4396,6 +4409,19 @@
 				)
 			)
 		)
+		(property "JLCPCB_CORRECTION" "0; 0; 180"
+			(at 0 0 180)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5ab8d5c7-f455-4517-9625-47e33a7a3f14")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(property ki_fp_filters "LED* LED_SMD:* LED_THT:*")
 		(path "/7e22cc31-0949-4887-84e7-8da980cd9193")
 		(sheetname "/")
@@ -6229,6 +6255,19 @@
 				)
 			)
 		)
+		(property "JLCPCB_CORRECTION" "0; 0; 270"
+			(at 0 0 270)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "14174d37-4bb1-4bb1-8a9e-aae556faa0e1")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(property ki_fp_filters "VQFN*1EP*3x3mm*P0.4mm*")
 		(path "/13fc8035-eec2-4a53-b372-e5f89a726b40")
 		(sheetname "/")
@@ -6926,7 +6965,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://jlcpcb.com/api/file/downloadByFileSystemAccessId/8590197686655098880"
+		(property "Datasheet" "https://jlcpcb.com/api/file/downloadByFileSystemAccessId/8613786702142062592"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -6950,7 +6989,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2901558"
+		(property "LCSC" "C2831380"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -7133,6 +7172,19 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "efb6b1c9-51f1-4770-a371-cf15cbe05b97")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "JLCPCB_CORRECTION" "0; 0; 270"
+			(at 0 0 180)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "34651af1-f821-410b-911b-e3c3506bc72f")
 			(effects
 				(font
 					(size 1 1)
@@ -8649,6 +8701,17 @@
 		(net 32)
 		(uuid "db34e949-b02f-4117-8a50-106497411cad")
 	)
+	(gr_circle
+		(center 146.7 108)
+		(end 146.65 108.1)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill yes)
+		(layer "F.SilkS")
+		(uuid "d5ee0162-e48b-4e6a-9831-486b02117992")
+	)
 	(gr_arc
 		(start 131.2 109.1)
 		(mid 130.987868 109.012132)
@@ -8843,8 +8906,8 @@
 		(uuid "e2da919f-767c-4204-bda1-877b8ecf61cb")
 	)
 	(gr_line
-		(start 130 95.5)
-		(end 130 109.5)
+		(start 129.75 95.5)
+		(end 129.75 109.5)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -8853,20 +8916,9 @@
 		(uuid "202d3ecb-de09-435b-aedf-319c328e03b8")
 	)
 	(gr_arc
-		(start 148 109.5)
-		(mid 147.853553 109.853553)
-		(end 147.5 110)
-		(stroke
-			(width 0.05)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "29ae1061-566f-45a0-82d8-aeb99838e062")
-	)
-	(gr_arc
-		(start 130.5 110)
-		(mid 130.146447 109.853553)
-		(end 130 109.5)
+		(start 130.25 110)
+		(mid 129.896447 109.853553)
+		(end 129.75 109.5)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -8875,8 +8927,8 @@
 		(uuid "3d29f21c-2b8d-444e-b3b9-4a0288857753")
 	)
 	(gr_line
-		(start 148 109.5)
-		(end 148 95.5)
+		(start 148.25 109.5)
+		(end 148.25 95.5)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -8885,8 +8937,8 @@
 		(uuid "5f646fed-8f0a-4894-8f37-77b46743cd4a")
 	)
 	(gr_line
-		(start 130.5 110)
-		(end 147.5 110)
+		(start 130.25 110)
+		(end 147.75 110)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -8895,20 +8947,20 @@
 		(uuid "5f82fbe6-1916-4b34-ae3a-7e11db4d15dc")
 	)
 	(gr_arc
-		(start 147.5 95)
-		(mid 147.853553 95.146447)
-		(end 148 95.5)
+		(start 147.75 95)
+		(mid 148.103553 95.146447)
+		(end 148.25 95.5)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "8adb2b74-d220-4a6f-a9a9-eae54dadd380")
+		(uuid "66fc03dc-4ac5-451c-b70c-b9cbee6ab19e")
 	)
 	(gr_arc
-		(start 130 95.5)
-		(mid 130.146447 95.146447)
-		(end 130.5 95)
+		(start 129.75 95.5)
+		(mid 129.896447 95.146447)
+		(end 130.25 95)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -8916,9 +8968,20 @@
 		(layer "Edge.Cuts")
 		(uuid "dc9d41e7-fdf5-40a9-b3c5-8cc40767d454")
 	)
+	(gr_arc
+		(start 148.25 109.5)
+		(mid 148.103553 109.853553)
+		(end 147.75 110)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "dfa53a22-e140-41ac-86ad-44f32660a921")
+	)
 	(gr_line
-		(start 130.5 95)
-		(end 147.5 95)
+		(start 130.25 95)
+		(end 147.75 95)
 		(stroke
 			(width 0.05)
 			(type default)
