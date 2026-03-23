@@ -1,0 +1,61 @@
+name: Nightly PCB Panel
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  panelize:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install KiCad 9 and kikit
+        run: |
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends kicad librsvg2-bin
+          echo "PYTHONPATH=/usr/lib/kicad/lib/python3/dist-packages/:/usr/lib/kicad/local/lib/python3.10/dist-packages:/usr/lib/kicad/local/lib/python3.11/dist-packages:/usr/lib/kicad/local/lib/python3.12/dist-packages" >> $GITHUB_ENV
+          echo "LD_LIBRARY_PATH=/usr/lib/kicad/lib/x86_64-linux-gnu:/usr/lib/kicad/lib/" >> $GITHUB_ENV
+          pip install kikit
+
+      - name: Panelize PCB
+        run: |
+          mkdir -p panel
+          kikit panelize -p kikit-panel-config.json \
+            hardware/openstint-transponder.kicad_pcb \
+            panel/panel-8.kicad_pcb
+
+      - name: Generate JLCPCB fab files
+        working-directory: hardware
+        run: |
+          kikit fab jlcpcb --no-drc --assembly \
+            --schematic openstint-transponder.kicad_sch \
+            ../panel/panel-8.kicad_pcb \
+            ../panel/
+
+      - name: Export schematic to PNG
+        run: |
+          kicad-cli sch export svg \
+            --output schematic.svg \
+            hardware/openstint-transponder.kicad_sch
+          rsvg-convert -w 2000 schematic.svg/openstint-transponder.svg -o schematic.png
+
+      - name: Package release files
+        run: zip -r panel-release.zip panel/
+
+      - name: Publish nightly release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: nightly-${{ github.ref_name }}
+          name: Nightly ${{ github.ref_name }}
+          prerelease: true
+          draft: false
+          body: |
+            ![Schematic](https://github.com/${{ github.repository }}/releases/download/nightly-${{ github.ref_name }}/schematic.png)
+          files: |
+            panel-release.zip
+            schematic.png
