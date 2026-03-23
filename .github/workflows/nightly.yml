@@ -9,11 +9,18 @@ permissions:
 jobs:
   panelize:
     runs-on: ubuntu-latest
-    container:
-      image: yaqwsx/kikit:latest
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install KiCad 9 and kikit
+        run: |
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends kicad librsvg2-bin
+          echo "PYTHONPATH=/usr/lib/kicad/lib/python3/dist-packages/:/usr/lib/kicad/local/lib/python3.10/dist-packages:/usr/lib/kicad/local/lib/python3.11/dist-packages:/usr/lib/kicad/local/lib/python3.12/dist-packages" >> $GITHUB_ENV
+          echo "LD_LIBRARY_PATH=/usr/lib/kicad/lib/x86_64-linux-gnu:/usr/lib/kicad/lib/" >> $GITHUB_ENV
+          pip install kikit
 
       - name: Panelize PCB
         run: |
@@ -32,11 +39,10 @@ jobs:
 
       - name: Export schematic to PNG
         run: |
-          apt-get install -y librsvg2-bin
           kicad-cli sch export svg \
             --output schematic.svg \
             hardware/openstint-transponder.kicad_sch
-          rsvg-convert -w 2000 schematic.svg -o schematic.png
+          rsvg-convert -w 2000 schematic.svg/openstint-transponder.svg -o schematic.png
 
       - name: Package release files
         run: zip -r panel-release.zip panel/
