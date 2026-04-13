@@ -1,7 +1,8 @@
 MCU=attiny1616
 F_CPU=10000000UL
 CC=avr-gcc
-CFLAGS=-mmcu=$(MCU) -O2 -DF_CPU=$(F_CPU) -B ../Atmel.ATtiny_DFP.2.0.368/gcc/dev/attiny1616 -I ../Atmel.ATtiny_DFP.2.0.368/include
+ATTINY_DFP ?= ../Atmel.ATtiny_DFP.2.0.368
+CFLAGS=-mmcu=$(MCU) -O2 -DF_CPU=$(F_CPU) -B $(ATTINY_DFP)/gcc/dev/attiny1616 -I $(ATTINY_DFP)/include
 OBJCOPY=avr-objcopy
 
 all: main.hex
@@ -18,7 +19,7 @@ flash: main.hex
 
 # this sets the main oscillator to 20 MHz:
 fuse:
-	avrdude -c atmelice_updi -p attiny3217 -U fuse1:w:0x02:m
+	avrdude -c atmelice_updi -p attiny1616 -U fuse1:w:0x02:m
 
 clean:
 	rm -f *.elf *.hex
