@@ -2,7 +2,7 @@ MCU=attiny1616
 F_CPU=10000000UL
 CC=avr-gcc
 ATTINY_DFP ?= ../Atmel.ATtiny_DFP.2.0.368
-CFLAGS=-mmcu=$(MCU) -O2 -DF_CPU=$(F_CPU) -B $(ATTINY_DFP)/gcc/dev/attiny1616 -I $(ATTINY_DFP)/include
+CFLAGS=-mmcu=$(MCU) -O2 -fstack-usage -DF_CPU=$(F_CPU) -B $(ATTINY_DFP)/gcc/dev/attiny1616 -I $(ATTINY_DFP)/include
 OBJCOPY=avr-objcopy
 
 all: main.hex
