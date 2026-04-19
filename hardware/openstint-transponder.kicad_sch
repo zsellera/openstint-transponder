@@ -6271,7 +6271,7 @@
 				)
 			)
 		)
-		(property "Value" "22"
+		(property "Value" "10"
 			(at 251.968 115.316 90)
 			(effects
 				(font
@@ -6306,7 +6306,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C25092"
+		(property "LCSC" "C25077"
 			(at 254 115.57 90)
 			(effects
 				(font
@@ -6711,7 +6711,7 @@
 				)
 			)
 		)
-		(property "Value" "22"
+		(property "Value" "10"
 			(at 208.788 115.316 90)
 			(effects
 				(font
@@ -6746,7 +6746,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C25092"
+		(property "LCSC" "C25077"
 			(at 210.82 115.57 90)
 			(effects
 				(font
