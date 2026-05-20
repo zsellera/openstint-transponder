@@ -1,6 +1,8 @@
 # AVR Firmware
 
-Firmware for the OpenStint transponder, targeting the **ATtiny1616**.
+Firmware for the OpenStint transponder, targeting the **ATtiny816**/**ATtiny1616**/**ATtiny3216**.
+
+Not tested with 416, but I think it would work there as well. Not measured, but I guesstimate the stack size upper limit to be around 80-90 bytes.
 
 ## Prerequisites
 
@@ -22,6 +24,7 @@ The DFP provides the device-specific headers, linker scripts, and startup object
 The extracted directory structure contains:
 ```
 Atmel.ATtiny_DFP.2.0.368/
+  gcc/dev/attiny816/   -- linker scripts and startup objects (-B path)
   gcc/dev/attiny1616/   -- linker scripts and startup objects (-B path)
   include/              -- device header files (-I path)
 ```
@@ -52,6 +55,11 @@ make flash
 This uses `avrdude` with an Atmel-ICE programmer over UPDI.
 
 ## Fuse Programming
+
+FOR PAST/FUTURE REFERENCE ONLY, THIS STEP IS NOT REQUIRED!
+
+ATtinys have an internal oscillator, which - by default - run at 16 MHz. A fuse programming
+is required to make it 20 MHz. However it's pointless - the RC oscillator is so unprecise we can not calibratie it to be within 5 MHz ±19 kHz reliably (which is needed for openstint decoder to detect it).
 
 To set the main oscillator to 20 MHz:
 

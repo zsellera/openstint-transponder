@@ -1,7 +1,4 @@
 #define F_CPU 10000000UL  // Match your external CMOS clock frequency
-#define MCU "attiny1616"
-
-#define FRAME_LEN 12
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -15,6 +12,11 @@
 FUSES = {
     .OSCCFG = 0x2,  // 0x02 = 20 MHz
 };
+
+#define FRAME_LEN 12
+
+#define LED_PORT    (PORTB)
+#define LED_PIN_bm  PIN4_bm
 
 #define	V29POLYA	0x1af
 #define	V29POLYB	0x11d
@@ -114,8 +116,9 @@ void encode_payload(uint8_t* dst, uint32_t payload24) {
     encode_transponder_msg(dst, message);
 }
 
+// ticks are read-write from interrupt; as it's 32-bit,
+// read-write takes multiple cycles.
 static volatile uint32_t _ticks;  // 10 kHz free-running counter (100 us per tick)
-
 static uint32_t ticks_read(void)
 {
     cli(); // do not increment tick while reading
@@ -207,16 +210,22 @@ void transmit_frame(const uint8_t *frame)
 
 int main(void)
 {
-    // PA5 LED — one small blink when timecode it sent
-    PORTA.DIRSET = PIN5_bm;
+    // PB4 LED — one small blink when timecode it sent
+    LED_PORT.DIRSET = LED_PIN_bm;
+    LED_PORT.OUTCLR = LED_PIN_bm; // led off
+
+    // clock setup:
+    // Note for experimenters: openstint's preamble detector
+    // is "picky" to clock deviation, and can tolerate up
+    // to ±19 kHz difference (0.38%). This is much tighter
+    // requirement than what calibration step is.
 
     // External CMOS clock on CLKI pin; update F_CPU to match your clock source
-    PORTA.OUTCLR = PIN5_bm; // led off
     ccp_write_io((void *)&CLKCTRL.MCLKCTRLA, CLKCTRL_CLKSEL_EXTCLK_gc);
     ccp_write_io((void *)&CLKCTRL.MCLKCTRLB, 0);  // No prescaler
     while (CLKCTRL.MCLKSTATUS & CLKCTRL_SOSC_bm);
     // if clock fails to start, this never goes off:
-    PORTA.OUTSET = PIN5_bm;
+    LED_PORT.OUTSET = LED_PIN_bm;
 
     // setup timer for a 10 kHz internal tick
     TCB0.CCMP    = 499;   // 10 MHz / 2 / (499+1) = 10 kHz
@@ -288,8 +297,6 @@ int main(void)
         // Count messages. Every 667th message is 
         message_counter = (message_counter + 1) % 667;
         if (message_counter == 0) { // next is the timesync
-            
-            
             // construct timecode message
             // deadline is actually the timecode when the next message is due
             uint32_t timecode = (deadline & 0x000fffff) | 0x00a00000;
@@ -297,10 +304,16 @@ int main(void)
 
             // re-wire tx_frame
             tx_frame = timesync_frame;
-            PORTA.OUTCLR = PIN5_bm;  // LED on
+            
+            // turn LED on:
+            LED_PORT.OUTCLR = LED_PIN_bm;
         } else {
             tx_frame = transponder_frame;
-            PORTA.OUTSET = PIN5_bm; // led off
+
+            // after 1/10s, turn LED off:
+            if (message_counter == 67) {
+                LED_PORT.OUTSET = LED_PIN_bm; // led off   
+            }
         }
         
         while (ticks_read() < deadline) {
