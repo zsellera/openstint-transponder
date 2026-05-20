@@ -14,11 +14,19 @@ RC (surface) racing transponder with ATtiny816/1616/3216, featuring:
 
 JLCPCB manifactures and assembles 5 panels of 2x4s, grand total of 40 pcs, for less than $200, including taxes and shipping (Hungary 27% VAT, no tariff, 2026 May).
 
-<img width="800" alt="openstint transponder v1 reference design" src="https://github.com/user-attachments/assets/bd993deb-2687-4035-adfb-4d545f512d77" />
+<img width="800" alt="openstint transponder v2" src="https://github.com/user-attachments/assets/66f0dce3-32b3-4e4d-bd2c-afecf5770aea" />
+
+**Signal level**
+
+Blue: RC4Hybrid, yellow: OpenStint v2 (antenna is the same distance from the detector)
+<img width="800" height="480" alt="OpenStint transponder to RC4H comparision" src="https://github.com/user-attachments/assets/38559cb3-6fb6-4c2b-8da3-63b21ac3ebe0" />
+
+**Radio performance**
+<img width="822" height="520" alt="SpikeImage0022" src="https://github.com/user-attachments/assets/31bba724-bf53-424b-8edb-b626d439838a" />
 
 ## Old version
 
-There is a previous version, with lower output level, more stressed components, pickier power requirements, using an STM32 MCU. It's on [v1](https://github.com/zsellera/openstint-transponder/tree/transponder-v2) branch. Production files from [2025 December](https://github.com/zsellera/openstint-transponder/releases/tag/release-2025-12-10).
+There is a previous version, with lower output level, more stressed components, pickier power requirements, using an STM32 MCU. It's on [v1](https://github.com/zsellera/openstint-transponder/tree/v1) branch. Production files from [2025 December](https://github.com/zsellera/openstint-transponder/releases/tag/release-2025-12-10).
 
 ## Manufacting
 
