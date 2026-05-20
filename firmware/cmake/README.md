@@ -1,1 +1,0 @@
-See [https://github.com/ObKo/stm32-cmake/]
