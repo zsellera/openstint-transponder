@@ -4,6 +4,10 @@ Firmware for the OpenStint transponder, targeting the **ATtiny816**/**ATtiny1616
 
 Not tested with 416, but I think it would work there as well. Not measured, but I guesstimate the stack size upper limit to be around 80-90 bytes.
 
+## Precompiled firmware
+
+An automated job compiles the firmware, check out [releases](https://github.com/zsellera/openstint-transponder/releases/tag/nightly-master).
+
 ## Prerequisites
 
 - `avr-gcc` toolchain (avr-gcc, avr-objcopy, avr-size)

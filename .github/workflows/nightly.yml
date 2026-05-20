@@ -1,6 +1,7 @@
 name: Nightly PCB Panel
 
 on:
+  push:
   workflow_dispatch:
 
 permissions:
