@@ -30,7 +30,9 @@ There is a previous version, with lower output level, more stressed components, 
 
 ## Manufacting
 
-See [relases](https://github.com/zsellera/openstint-transponder/releases/tag/nightly-master) for gerber, pos and BOM files. These are directly uploadable to (JLCPCB)[https://jlcpcb.com/].
+See [relases](https://github.com/zsellera/openstint-transponder/releases/tag/nightly-master) for gerber, pos and BOM files. These are directly uploadable to [JLCPCB](https://jlcpcb.com/).
+
+[Order placement guide](https://www.rctech.net/forum/showpost.php?p=16260447&postcount=66)
 
 Order a standard 1.2 mm 4-layer PCB to get the same performace as tested.
 
