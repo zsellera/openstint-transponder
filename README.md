@@ -28,6 +28,8 @@ st-flash --connect-under-reset --format ihex write transponder.hex
 
 The programming points are separated by 2 mm. I use a pinheader of the same pitch with pogo pins attached to them as a makeshift programming adapter.
 
+[programming jig by Durtman](https://www.thingiverse.com/thing:7310937)
+
 ## Personal note (2025-12-10)
 
 This project use a FET driver from TI to produce the necessary antenna current. This IC needs 4.5 V minimum to operate, meaning we can not use this transponder with 1s batteries (1/12 pancars). I could not find any push-pull driver which can operate at 3.3 V and 5+ MHz. Some MCUs exists which can source/sink 50 mA directly from GPIO, but as of now, I don't know how to make this transponder work with such a low current. This design requires ±170 mA, and still produces only 1/2 of the signal level as an RC4 hybrid.
