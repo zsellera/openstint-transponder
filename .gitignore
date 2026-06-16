@@ -1,2 +1,4 @@
 .vscode/
 panel/
+Atmel.ATtiny_DFP*/
+build/

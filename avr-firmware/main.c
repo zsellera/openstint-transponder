@@ -5,8 +5,10 @@
 #include <avr/cpufunc.h>
 #include <avr/fuse.h>
 #include <avr/sleep.h>
+#include <avr/wdt.h>
 
 #include <stddef.h>
+#include <stdbool.h>
 #include <string.h>
 
 FUSES = {
@@ -15,8 +17,12 @@ FUSES = {
 
 #define FRAME_LEN 12
 
+#ifndef LED_PORT
 #define LED_PORT    (PORTB)
+#endif
+#ifndef LED_PIN_bm
 #define LED_PIN_bm  PIN4_bm
+#endif
 
 #define	V29POLYA	0x1af
 #define	V29POLYB	0x11d
@@ -132,6 +138,11 @@ ISR(TCB0_INT_vect) {
     TCB0.INTFLAGS = TCB_CAPT_bm;
 }
 
+// true once the external CMOS clock is running; false if we fell back
+// to the internal RC oscillator. Gates timesync transmission and the
+// LED blink pattern.
+static volatile bool precise_clock = false;
+
 static uint16_t lfsr = 0xACE1;
 
 static uint8_t rand8(void)
@@ -139,6 +150,15 @@ static uint8_t rand8(void)
     uint16_t bit = ((lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5)) & 1;
     lfsr = (lfsr >> 1) | (bit << 15);
     return (uint8_t)lfsr;
+}
+
+void handle_led(uint16_t cntr) {
+    switch (cntr) {
+        case 0:  LED_PORT.OUTCLR = LED_PIN_bm; break; // on  (blink 1)
+        case 17: LED_PORT.OUTSET = LED_PIN_bm; break; // off
+        case 34: if (!precise_clock) { LED_PORT.OUTCLR = LED_PIN_bm; } break; // on  (blink 2)
+        case 51: LED_PORT.OUTSET = LED_PIN_bm; break; // off
+    }
 }
 
 void transmit_frame(const uint8_t *frame)
@@ -214,18 +234,30 @@ int main(void)
     LED_PORT.DIRSET = LED_PIN_bm;
     LED_PORT.OUTCLR = LED_PIN_bm; // led off
 
-    // clock setup:
-    // Note for experimenters: openstint's preamble detector
-    // is "picky" to clock deviation, and can tolerate up
-    // to ±19 kHz difference (0.38%). This is much tighter
-    // requirement than what calibration step is.
-
     // External CMOS clock on CLKI pin; update F_CPU to match your clock source
     ccp_write_io((void *)&CLKCTRL.MCLKCTRLA, CLKCTRL_CLKSEL_EXTCLK_gc);
-    ccp_write_io((void *)&CLKCTRL.MCLKCTRLB, 0);  // No prescaler
-    while (CLKCTRL.MCLKSTATUS & CLKCTRL_SOSC_bm);
-    // if clock fails to start, this never goes off:
-    LED_PORT.OUTSET = LED_PIN_bm;
+
+    // Wait up to ~100 ms for the external clock to actually start
+    // Until the external clock starts the CPU runs on OSC20M,
+    // prescaled = 20 MHz / 6 = 3.333 MHz
+    uint32_t clk_timeout = 33333UL; // ca. 100 ms
+    while (!(CLKCTRL.MCLKSTATUS & CLKCTRL_EXTS_bm)) {
+        if (--clk_timeout == 0)
+            break;
+    }
+
+    if (CLKCTRL.MCLKSTATUS & CLKCTRL_EXTS_bm) {
+        ccp_write_io((void *)&CLKCTRL.MCLKCTRLB, 0);  // No prescaler
+        precise_clock = true;  // external clock confirmed running
+    } else {
+        // External clock never started: fall back to the internal
+        // 20 MHz RC oscillator with /2 prescaler = 10 MHz (keeps F_CPU).
+        ccp_write_io((void *)&CLKCTRL.MCLKCTRLA, CLKCTRL_CLKSEL_OSC20M_gc);
+        ccp_write_io((void *)&CLKCTRL.MCLKCTRLB, CLKCTRL_PDIV_2X_gc | CLKCTRL_PEN_bm);
+        precise_clock = false;
+    }
+
+    LED_PORT.OUTSET = LED_PIN_bm; // led off (resting state)
 
     // setup timer for a 10 kHz internal tick
     TCB0.CCMP    = 499;   // 10 MHz / 2 / (499+1) = 10 kHz
@@ -284,6 +316,13 @@ int main(void)
     timesync_frame[0] = 0xf9;
     timesync_frame[1] = 0xa8;
 
+    // Watchdog: if the main clock dies at runtime the CPU halts and stops
+    // petting the dog. The WDT runs on the independent ULP 32 kHz osc, so
+    // it still fires and resets the chip — reboot then takes the startup
+    // fallback path (internal RC, precise_clock = false). 0.256 s timeout
+    while (WDT.STATUS & WDT_SYNCBUSY_bm);
+    ccp_write_io((void *)&WDT.CTRLA, WDT_PERIOD_256CLK_gc);
+
     uint16_t message_counter = 0;
     uint8_t *tx_frame = transponder_frame; // timesync vs transponder frame
     while (1)
@@ -294,9 +333,11 @@ int main(void)
         // 8 + rand8()%15 ticks at 10 kHz = 0.8-2.2 ms
         uint32_t deadline = ticks_read() + 8 + (rand8() % 15);
 
-        // Count messages. Every 667th message is 
+        // Count messages. Every 667th message is timecode
         message_counter = (message_counter + 1) % 667;
-        if (message_counter == 0) { // next is the timesync
+
+        // Precise clock: send timesync regularly, blink once per cycle.
+        if (precise_clock && message_counter == 0) { // next is the timesync
             // construct timecode message
             // deadline is actually the timecode when the next message is due
             uint32_t timecode = (deadline & 0x000fffff) | 0x00a00000;
@@ -304,20 +345,16 @@ int main(void)
 
             // re-wire tx_frame
             tx_frame = timesync_frame;
-            
-            // turn LED on:
-            LED_PORT.OUTCLR = LED_PIN_bm;
         } else {
             tx_frame = transponder_frame;
-
-            // after 1/10s, turn LED off:
-            if (message_counter == 67) {
-                LED_PORT.OUTSET = LED_PIN_bm; // led off   
-            }
         }
+
+        // blink led
+        handle_led(message_counter);
         
         while (ticks_read() < deadline) {
             sleep_cpu();
         }
+        wdt_reset();
     }
 }

@@ -14,7 +14,30 @@ An automated job compiles the firmware, check out [releases](https://github.com/
 - `avrdude` for flashing
 - **Microchip ATtiny Device Family Pack (DFP)** — required because avr-libc does not ship full support for newer ATtiny 0/1/2-series chips
 
-## Obtaining the ATtiny DFP
+## Building
+
+The project generates a Makefile with CMake, downloading AVR support packages meanwhile.
+
+```sh
+mkdir build
+cd build
+cmake ..
+make
+```
+
+Alternatives:
+
+```sh
+# v1 revision (led on different pin)
+cmake -B build -DHW_REV=v1
+
+# manual DFP path
+cmake -B build -DATTINY_DFP=/path/to/Atmel.ATtiny_DFP.2.0.368
+```
+
+### Obtaining the ATtiny DFP manually
+
+The new CMake script downloads this automatically
 
 The DFP provides the device-specific headers, linker scripts, and startup objects needed by avr-gcc.
 
@@ -32,23 +55,6 @@ Atmel.ATtiny_DFP.2.0.368/
   gcc/dev/attiny1616/   -- linker scripts and startup objects (-B path)
   include/              -- device header files (-I path)
 ```
-
-## Building
-
-Set the `ATTINY_DFP` environment variable to point to the root of the extracted DFP directory, then run `make`:
-
-```sh
-export ATTINY_DFP=/path/to/Atmel.ATtiny_DFP.2.0.368
-make
-```
-
-Alternatively, pass it directly to make:
-
-```sh
-make ATTINY_DFP=/path/to/Atmel.ATtiny_DFP.2.0.368
-```
-
-If `ATTINY_DFP` is not set, it defaults to `../Atmel.ATtiny_DFP.2.0.368` (relative to this directory).
 
 ## Flashing
 
