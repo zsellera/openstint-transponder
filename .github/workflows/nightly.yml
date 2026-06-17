@@ -15,16 +15,12 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install AVR toolchain
-        run: sudo apt-get install --yes --no-install-recommends gcc-avr avr-libc binutils-avr
-
-      - name: Download ATtiny DFP
-        run: |
-          curl -L http://packs.download.atmel.com/Atmel.ATtiny_DFP.2.1.484.atpack -o Atmel.ATtiny_DFP.atpack
-          unzip Atmel.ATtiny_DFP.atpack -d Atmel.ATtiny_DFP
+        run: sudo apt-get install --yes --no-install-recommends gcc-avr avr-libc binutils-avr cmake
 
       - name: Build AVR firmware
-        working-directory: avr-firmware
-        run: make ATTINY_DFP=../Atmel.ATtiny_DFP
+        run: |
+          cmake -B avr-firmware/build -S avr-firmware
+          cmake --build avr-firmware/build
 
       - name: Install KiCad 9 and kikit
         run: |
@@ -72,4 +68,4 @@ jobs:
           files: |
             panel-release.zip
             schematic.png
-            avr-firmware/main.hex
+            avr-firmware/build/main.hex
