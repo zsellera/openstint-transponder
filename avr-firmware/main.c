@@ -166,22 +166,22 @@ void transmit_frame(const uint8_t *frame)
     const uint8_t *fp = frame;
     cli();
     __asm__ __volatile__ (
-        // Enable CCL
+        // Init sequence: 4 symbols @ 1.25 MHz = 3.2 us = 32 cycles
+        // SPI idle is active-high, we must send 0x00, and time it so
+        // only last 4 bits are output to CCL pins
+        "ldi r16, 0              \n\t"  // prime
+        "sts %[txdata], r16      \n\t"  // starts shifting; DREIF will set
+        // tuned wait loop
+        "ldi r16, 10             \n\t"  // ca. 17 peaks in sent data
+    "1:                          \n\t"
+        "dec r16                 \n\t"
+        "brne 1b                 \n\t"
+        // waint complete, enable CCL
         "lds r16, %[cclctrla]    \n\t"  // 3 cyc
         "ori r16, %[cclen]       \n\t"  // 1 cyc
         "sts %[cclctrla], r16    \n\t"  // 2 cyc
-
-        // Init sequence: 4 symbols @ 1.25 MHz = 3.2 us = 32 cycles
-        // From STS above to first USART write:
-        //   ldi r18 (1) + ldi r16 (1) + delay loop (3N-1)
-        //   + lds (3) + sbrs-skip (2) + ld (2) + sts (2) = 10+3N
-        // Total from CCL enable (STS, 2 cyc) = 2+1+1+3N-1+10 = 13+3N
-        // Need 32 cycles: N = (32-13)/3 = 6.33 => N=6 (30 cyc) or N=7 (33 cyc)
-        "ldi r18, %[len]         \n\t"  // 1 cyc - frame byte counter
-        "ldi r16, 7              \n\t"  // 1 cyc - delay counter
-    "1:                          \n\t"
-        "dec r16                 \n\t"  // 1 cyc
-        "brne 1b                 \n\t"  // 2 taken / 1 not taken
+        // prepare transmit:
+        "ldi r18, %[len]         \n\t" 
 
         // Transmit frame bytes
     "2:                          \n\t"
