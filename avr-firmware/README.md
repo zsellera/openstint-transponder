@@ -33,6 +33,9 @@ cmake -B build -DHW_REV=v1
 
 # manual DFP path
 cmake -B build -DATTINY_DFP=/path/to/Atmel.ATtiny_DFP.2.0.368
+
+# use "adafruit high voltage programmer"
+cmake -B build -DPROGRAMMER=serialupdi
 ```
 
 ### Obtaining the ATtiny DFP manually
