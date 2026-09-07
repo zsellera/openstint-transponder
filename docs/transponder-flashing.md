@@ -1,3 +1,8 @@
+---
+title: Flashing OpenStint Transponder Firmware
+description: How to flash the ATtiny-based OpenStint RC lap timing transponder firmware using an Atmel-ICE or a cheap UPDI programmer.
+---
+
 # Flashing the firmware
 
 There is an automated job that compiles the firmware, check out [releases](https://github.com/zsellera/openstint-transponder/releases/tag/nightly-master). You'll need the `.hex` file. You can [compile yourself](https://github.com/zsellera/openstint-transponder/blob/master/avr-firmware/README.md), of course.
