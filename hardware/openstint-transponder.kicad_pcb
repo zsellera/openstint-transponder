@@ -155,7 +155,7 @@
 	(net 12 "/GANT+")
 	(net 13 "/ANT+")
 	(net 14 "/ANT-")
-	(net 15 "/UDPI")
+	(net 15 "/UPDI")
 	(net 16 "unconnected-(U1-PB3-Pad11)")
 	(net 17 "unconnected-(U1-PA2-Pad1)")
 	(net 18 "unconnected-(U1-PC2-Pad17)")
@@ -7316,7 +7316,7 @@
 			(size 0.2 0.8)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net 15 "/UDPI")
+			(net 15 "/UPDI")
 			(pinfunction "~{RESET}/PA0")
 			(pintype "bidirectional")
 			(uuid "1dd1d43b-7e51-4ebc-ba4a-1f040c5880a5")
@@ -8620,7 +8620,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "UDPI"
+		(property "Value" "UPDI"
 			(at 0 -1.55 90)
 			(layer "B.Fab")
 			(uuid "d38fce74-c216-47a3-bc39-ed035809d1cd")
@@ -8703,7 +8703,7 @@
 			(at 0 0 90)
 			(size 1 1)
 			(layers "B.Cu" "B.Mask")
-			(net 15 "/UDPI")
+			(net 15 "/UPDI")
 			(pinfunction "1")
 			(pintype "passive")
 			(uuid "a5078ff5-9897-443e-bb8d-fe276dc5a42e")
@@ -9483,7 +9483,7 @@
 			(justify left bottom mirror)
 		)
 	)
-	(gr_text "UDPI"
+	(gr_text "UPDI"
 		(at 145.35 105.4 0)
 		(layer "B.SilkS")
 		(uuid "9bf2d49c-7a20-4e03-80e5-914c927f60ae")

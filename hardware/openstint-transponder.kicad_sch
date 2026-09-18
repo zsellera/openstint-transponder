@@ -4831,7 +4831,7 @@
 		)
 		(uuid "af38334e-002a-45db-932d-3425561838cc")
 	)
-	(label "UDPI"
+	(label "UPDI"
 		(at 119.38 40.64 180)
 		(effects
 			(font
@@ -4881,7 +4881,7 @@
 		)
 		(uuid "f8f39c5c-e786-4d1a-b287-2bb31f05d42e")
 	)
-	(label "UDPI"
+	(label "UPDI"
 		(at 35.56 110.49 180)
 		(effects
 			(font
@@ -8541,7 +8541,7 @@
 				)
 			)
 		)
-		(property "Value" "UDPI"
+		(property "Value" "UPDI"
 			(at 24.638 107.95 90)
 			(effects
 				(font
