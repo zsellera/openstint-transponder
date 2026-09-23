@@ -38,3 +38,23 @@ OR:
 ```
 avrdude -c serialupdi -p attiny816 -U "flash:w:main.hex" -U fuse1:w:0x02:m
 ```
+
+## Reading the transponder ID
+
+The transponder ID is not stored anywhere: the firmware calculates it at boot from the chip's factory serial number (`crc32(SIGROW.SERNUM0..9) % 10000000`). The serial number is readable over UPDI, so [tools/transponder_id.py](https://github.com/zsellera/openstint-transponder/blob/master/tools/transponder_id.py) can tell you the ID a board will transmit, over the same connection you flash with. No decoder or RF power-up needed. It is read-only and works on a blank chip too.
+
+It needs Python 3 and avrdude 7.x or newer (for the `sernum` memory), with a `serialupdi` programmer:
+
+```
+$ python tools/transponder_id.py --port COM5
+SERNUM : 2F510C111E4277A305BB
+ID     : 4729780
+```
+
+When building a batch, add `--csv` and `--label` to collect a labelling list as you go. Each run appends a `timestamp;label;sernum;transponder_id` row:
+
+```
+python tools/transponder_id.py --port COM5 --csv transponders.csv --label 07
+```
+
+Run `python tools/transponder_id.py --help` for the rest of the options (`--baud`, `--part`, `--avrdude`).
