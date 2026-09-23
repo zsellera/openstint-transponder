@@ -9483,7 +9483,7 @@
 			(justify left bottom mirror)
 		)
 	)
-	(gr_text "UDPI"
+	(gr_text "UPDI"
 		(at 145.35 105.4 0)
 		(layer "B.SilkS")
 		(uuid "9bf2d49c-7a20-4e03-80e5-914c927f60ae")
